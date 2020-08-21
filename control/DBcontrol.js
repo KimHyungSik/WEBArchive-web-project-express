@@ -1,7 +1,8 @@
 const sql = require('../sql/sql');
+
 export const getTable = (req, res) => {
   sql
-    .query(req.params.table, req.body)
+    .query(req.params.table, req.query)
     .then((result) => {
       console.log(result);
       res.json({ result });
@@ -13,6 +14,20 @@ export const getTable = (req, res) => {
 };
 
 export const postTable = (req, res) => {
+  console.log(req);
+
+  sql
+    .insert(req.params.table, req.body)
+    .then((result) => {
+      res.json({ table: result });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.json({ error: err });
+    });
+};
+
+export const postSiteTable = (req, res) => {
   console.log(req);
   sql
     .insert(req.params.table, req.body)
