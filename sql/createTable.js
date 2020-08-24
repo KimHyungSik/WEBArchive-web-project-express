@@ -1,13 +1,13 @@
+import dotenv from 'dotenv';
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize(
-  'postgres://weba_master:alfdid33@localhost:5432/weba',
-  {
-    define: {
-      timestamps: false,
-    },
-  }
-);
+dotenv.config();
+
+const sequelize = new Sequelize(process.env.sqlUrl, {
+  define: {
+    timestamps: false,
+  },
+});
 
 sequelize
   .authenticate()
@@ -170,6 +170,27 @@ tables.linkdata = {
 const linkdata = createTable('linkdata');
 linkdata.sync();
 
+tables.tagdata = {
+  sitename: {
+    type: Sequelize.STRING(30),
+    primaryKey: true,
+  },
+  link: {
+    type: Sequelize.STRING(255),
+  },
+  description: {
+    type: Sequelize.STRING(255),
+  },
+  imagelink: {
+    type: Sequelize.STRING(255),
+  },
+  tags: {
+    type: Sequelize.JSON,
+  },
+};
+const tagdata = createTable('tagdata');
+tagdata.sync();
+
 const tableList = {
   userdata: userdata,
   sitedata: sitedata,
@@ -177,6 +198,7 @@ const tableList = {
   comments: comments,
   taglinks: taglinks,
   linkdata: linkdata,
+  tagdata: tagdata,
 };
 
 export default tableList;

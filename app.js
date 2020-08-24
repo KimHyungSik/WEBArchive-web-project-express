@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 import router from './Routes';
-import table from './Route/tableRoute';
+import fileUpload from 'express-fileupload';
 import {
   getTable,
   postTable,
@@ -9,17 +9,15 @@ import {
   postSiteTable,
 } from './control/DBcontrol';
 import cors from 'cors';
-import multer from 'multer';
-
-const uploader = multer({ dest: 'uploads/' });
 const app = express();
 
 app.use(bodyParser.json());
+app.use(fileUpload());
 app.use(cors());
 //app.use(router.table, table);
 app.get(router.table, getTable);
-app.post(router.table, postTable);
-app.post(router.siteTable, uploader.single('imgaglink'), postSiteTable);
+app.post(router.table, postTable); //site이외 업로드용
+app.post(router.siteTable, postSiteTable); //site 업로드용
 app.put(router.table, putTable);
 
 export default app;
